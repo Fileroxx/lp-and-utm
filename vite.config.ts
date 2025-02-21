@@ -1,16 +1,12 @@
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [tailwindcss()],
-  resolve: {
-    alias: {
-      "prop-types": "prop-types/index.js"
-    }
-  },
+  plugins: [react(), tailwindcss()],
+  base: "./", 
   build: {
-    rollupOptions: {
-      external: ['prop-types']
-    }
-  }
+    outDir: "dist",
+    assetsDir: "assets",
+  },
 });

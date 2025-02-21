@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/?preserveQuery=true" }
+    { "source": "/(.*)", "destination": "/$1" }
   ]
 }

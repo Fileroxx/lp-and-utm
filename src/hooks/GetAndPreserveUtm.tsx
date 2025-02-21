@@ -11,10 +11,11 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const storedUtm = localStorage.getItem("utmParams");
+    let storedUtm = localStorage.getItem("utmParams");
     let utmParams: Record<string, string> = storedUtm ? JSON.parse(storedUtm) : {};
 
     let hasNewUTMs = false;
+
     ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((utm) => {
       const value = urlParams.get(utm);
       if (value && utmParams[utm] !== value) {
@@ -27,7 +28,7 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
       localStorage.setItem("utmParams", JSON.stringify(utmParams));
     }
 
-    const updatedSearchParams = new URLSearchParams(urlParams);
+    const updatedSearchParams = new URLSearchParams(location.search);
 
     let hasUpdated = false;
     Object.entries(utmParams).forEach(([key, value]) => {
@@ -37,10 +38,10 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
       }
     });
 
-    if (hasUpdated && location.search !== `?${updatedSearchParams.toString()}`) {
+    if (hasUpdated) {
       navigate(`${location.pathname}?${updatedSearchParams.toString()}`, { replace: true });
     }
-  }, [location.search]);
+  }, [location.pathname, location.search]); 
 
   return <>{children}</>;
 }

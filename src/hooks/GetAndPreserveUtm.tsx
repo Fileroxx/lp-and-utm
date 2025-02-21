@@ -11,12 +11,13 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    let storedUtm = localStorage.getItem("utmParams");
-    let utmParams: Record<string, string> = storedUtm ? JSON.parse(storedUtm) : {};
+    const storedUtm = localStorage.getItem("utmParams");
+    const utmParams: Record<string, string> = storedUtm ? JSON.parse(storedUtm) : {};
 
     let hasNewUTMs = false;
-
-    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((utm) => {
+    const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+    
+    utmKeys.forEach((utm) => {
       const value = urlParams.get(utm);
       if (value && utmParams[utm] !== value) {
         utmParams[utm] = value;
@@ -28,20 +29,25 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
       localStorage.setItem("utmParams", JSON.stringify(utmParams));
     }
 
-    const updatedSearchParams = new URLSearchParams(location.search);
+    const updatedParams = new URLSearchParams(location.search);
+    let hasUpdates = false;
 
-    let hasUpdated = false;
-    Object.entries(utmParams).forEach(([key, value]) => {
-      if (!updatedSearchParams.has(key) || updatedSearchParams.get(key) !== value) {
-        updatedSearchParams.set(key, value);
-        hasUpdated = true;
+    utmKeys.forEach((utm) => {
+      const storedValue = utmParams[utm];
+      if (storedValue && !updatedParams.has(utm)) {
+        updatedParams.set(utm, storedValue);
+        hasUpdates = true;
       }
     });
 
-    if (hasUpdated) {
-      navigate(`${location.pathname}?${updatedSearchParams.toString()}`, { replace: true });
+
+    if (hasUpdates && location.search !== `?${updatedParams.toString()}`) {
+      navigate(
+        { pathname: location.pathname, search: updatedParams.toString() },
+        { replace: true }
+      );
     }
-  }, [location.pathname, location.search]); 
+  }, [location, navigate]); 
 
   return <>{children}</>;
 }

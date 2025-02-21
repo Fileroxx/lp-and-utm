@@ -10,8 +10,8 @@ function App() {
     <Router>
 
       <Routes>
-        <Route element={<GetAndPreserveUTMs> <Home /> </GetAndPreserveUTMs>} path="/" />
-        <Route element={<GetAndPreserveUTMs> <Obrigado /> </GetAndPreserveUTMs>} path="/obrigado" />
+        <Route path="/" element={<GetAndPreserveUTMs> <Home /> </GetAndPreserveUTMs>}/>
+        <Route path="/obrigado" element={<GetAndPreserveUTMs> <Obrigado /> </GetAndPreserveUTMs>}  />
       </Routes>
 
     </Router>

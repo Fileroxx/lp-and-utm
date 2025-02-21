@@ -7,47 +7,46 @@ interface PreserveUTMsProps {
 
 function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname, search } = useLocation();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const storedUtm = localStorage.getItem("utmParams");
-    const utmParams: Record<string, string> = storedUtm ? JSON.parse(storedUtm) : {};
+    const urlParams = new URLSearchParams(search);
+    const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+    const storedUTMs = JSON.parse(localStorage.getItem("utmParams") || "{}");
 
     let hasNewUTMs = false;
-    const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
-    
-    utmKeys.forEach((utm) => {
-      const value = urlParams.get(utm);
-      if (value && utmParams[utm] !== value) {
-        utmParams[utm] = value;
-        hasNewUTMs = true;
+    const currentUTMs: Record<string, string> = {};
+
+    utmKeys.forEach((key) => {
+      const value = urlParams.get(key);
+      if (value) {
+        currentUTMs[key] = value;
+        if (value !== storedUTMs[key]) hasNewUTMs = true;
       }
     });
 
     if (hasNewUTMs) {
-      localStorage.setItem("utmParams", JSON.stringify(utmParams));
+      localStorage.setItem("utmParams", JSON.stringify(currentUTMs));
     }
 
-    const updatedParams = new URLSearchParams(location.search);
-    let hasUpdates = false;
+    const updatedParams = new URLSearchParams(search);
+    let shouldUpdate = false;
 
-    utmKeys.forEach((utm) => {
-      const storedValue = utmParams[utm];
-      if (storedValue && !updatedParams.has(utm)) {
-        updatedParams.set(utm, storedValue);
-        hasUpdates = true;
+    utmKeys.forEach((key) => {
+      const storedValue = storedUTMs[key];
+      if (storedValue && !updatedParams.has(key)) {
+        updatedParams.set(key, storedValue);
+        shouldUpdate = true;
       }
     });
 
-
-    if (hasUpdates && location.search !== `?${updatedParams.toString()}`) {
+    if (shouldUpdate && search !== `?${updatedParams.toString()}`) {
       navigate(
-        { pathname: location.pathname, search: updatedParams.toString() },
+        { pathname, search: updatedParams.toString() },
         { replace: true }
       );
     }
-  }, [location, navigate]); 
+  }, [pathname, search, navigate]);
 
   return <>{children}</>;
 }

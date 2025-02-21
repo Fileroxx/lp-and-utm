@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Wrap from "../components/Wrap";
 import Title from "../components/Title";
 import Paragraph from "../components/Paragraph";

@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.0.7",
     "framer-motion": "^12.4.7",
     "plyr-react": "^5.3.0",
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.29.0"

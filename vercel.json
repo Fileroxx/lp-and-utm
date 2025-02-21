@@ -1,4 +1,15 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
- 
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "(utm_source|utm_medium|utm_campaign|utm_term|utm_content)",
+          "value": "(?<utm>.*)"
+        }
+      ]
+    }
+  ]
 }

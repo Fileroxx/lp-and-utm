@@ -40,7 +40,7 @@ function GetAndPreserveUTMs({ children }: PreserveUTMsProps) {
     if (hasUpdated && location.search !== `?${updatedSearchParams.toString()}`) {
       navigate(`${location.pathname}?${updatedSearchParams.toString()}`, { replace: true });
     }
-  }, [location.pathname]); 
+  }, [location.search]);
 
   return <>{children}</>;
 }

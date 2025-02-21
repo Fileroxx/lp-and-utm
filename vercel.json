@@ -1,14 +1,11 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "headers": [
+  "redirects": [
     {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
-        }
-      ]
+      "source": "/(.*)",
+      "destination": "/",
+      "type": 301,
+      "preserveQuery": true
     }
   ]
 }

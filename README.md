@@ -30,7 +30,6 @@ Criar uma **landing page** otimizada para campanhas de marketing digital, garant
 - **React.js** (Vite)
 - **TypeScript**
 - **React Router Dom**
-- **Framer Motion** (para animações)
 - **CSS Modules / Styled Components** (caso necessário)
 
 ---

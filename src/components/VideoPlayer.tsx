@@ -1,14 +1,15 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
+import Image from "./Image";
 
 interface VideoPlayerProps {
   url: string;
   type?: "youtube" | "vimeo" | "video";
-  controlsColor?: string; 
-  progressColor?: string; 
-  backgroundColor?: string; 
-  rangeColor?: string; 
+  controlsColor?: string;
+  progressColor?: string;
+  backgroundColor?: string;
+  rangeColor?: string;
 }
 
 const VideoPlayer = ({
@@ -20,6 +21,8 @@ const VideoPlayer = ({
   rangeColor = "#ffcc00",
 }: VideoPlayerProps) => {
   const plyrRef = useRef<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
 
   return (
     <div
@@ -31,18 +34,35 @@ const VideoPlayer = ({
         "--plyr-range-color": rangeColor,
       } as React.CSSProperties}
     >
-      <Plyr
-        ref={plyrRef}
-        source={{
-          type: "video",
-          sources: [{ src: url, provider: type === "youtube" || type === "vimeo" ? type : undefined }],
-        }}
-        options={{
-          controls: ["play", "progress", "current-time", "mute", "volume", "fullscreen"],
-          autoplay: true,
-        }}
-      />
-
+      {!isLoaded ? (
+        <div
+          className="relative cursor-pointer flex items-center justify-center"
+          style={{
+            background: "linear-gradient(180deg, #08080E 0%, #67677551 100%)",
+    
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "360px",
+          }}
+          onClick={() => setIsLoaded(true)} 
+        >
+          <button className="text-white text-3xl bg-gray-900/75 px-6 py-2 rounded-lg cursor-pointer">
+            <Image src="play.png"/>
+          </button>
+        </div>
+      ) : (
+        <Plyr
+          ref={plyrRef}
+          source={{
+            type: "video",
+            sources: [{ src: url, provider: type === "youtube" || type === "vimeo" ? type : undefined }],
+          }}
+          options={{
+            controls: ["play", "progress", "current-time", "mute", "volume", "fullscreen"],
+            autoplay: true,
+          }}
+        />
+      )}
 
       <style>
         {`

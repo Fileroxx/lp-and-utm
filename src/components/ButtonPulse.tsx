@@ -48,7 +48,7 @@ const ButtonPulse = ({
           background: background,
           color: textColor,
           animation: "pulse 2s infinite",
-          fontFamily: "Helvetica Neue, Arial",
+          fontFamily: "Space Grotesk",
           fontWeight: 600,
         }}
         onClick={onClick}
